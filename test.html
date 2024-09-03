@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<body>
+<p id="demo"></p>
+
+<script>
+async function getSpotifyAccessToken(clientId, clientSecret) {
+    const url = 'https://accounts.spotify.com/api/token';
+
+    // Encode clientId and clientSecret to Base64
+    const authString = btoa(`${clientId}:${clientSecret}`);
+
+    try {
+        // Make the POST request
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${authString}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                'grant_type': 'client_credentials'
+            })
+        });
+
+        // Check if the request was successful
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        const data = await response.json();
+
+        // Check if access token is present
+        if (data.access_token) {
+            console.log("Access Token: " + data.access_token);
+            document.getElementById('demo').innerHTML = data.access_token;
+        } else {
+            console.log("Failed to retrieve access token.");
+        }
+
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
+
+// Replace with your actual clientId and clientSecret
+const clientId = '15aa35c513194502a1530017ce59cf65';
+const clientSecret = '4ebfd4ffb8454404add5dee6bbdbe3d9';
+
+// Call the function to get the access token
+getSpotifyAccessToken(clientId, clientSecret);
+
+</script>
+
+</body>
+</html>
+
