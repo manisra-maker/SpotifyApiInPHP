@@ -37,8 +37,8 @@ if (isset($data['access_token'])) {
 }
 
 // Replace the previous code with this section if you're adding to the previous script
-$song = $_POST['sname']; // Example song name
-// $song = 'The Less I Know The Better'; // Example song name
+//$song = $_POST['sname']; // Example song name
+$song = 'Bye Bye Bye'; // Example song name
 $accessToken=$data['access_token'];
 $ch = curl_init();
 
@@ -52,7 +52,10 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 $data = json_decode($response, true);
-//print_r($data);
+
+// $filedata = print_r($data, true);
+// file_put_contents('file1.txt',$filedata, FILE_APPEND);
+
 $track = $data['tracks']['items'][0];
 
 // Display song details
@@ -60,6 +63,8 @@ echo "Track Name: " . $track['name'] . "\n";
 echo "Artist: " . $track['artists'][0]['name'] . "\n";
 echo "Album: " . $track['album']['name'] . "\n";
 echo "Release Date: " . $track['album']['release_date'] . "\n";
-echo "Preview URL: " . $track['artists'][0]['href'] . "\n";
+echo "Song URL: " . $track['external_urls']['spotify'] . "\n";
+echo "Album Link: " . $track['album']['artists'][0]['external_urls']['spotify'] . "\n";
+echo "Album Cover Photo: " . $track['album']['images'][0]['url'] . "\n";
 
 
